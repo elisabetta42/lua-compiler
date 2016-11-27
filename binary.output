@@ -1,0 +1,3284 @@
+Terminals unused in grammar
+
+   SDQUOTE
+   SQUOTE
+
+
+Stato 21 1 riduzione/riduzione
+Stato 37 1 conflitti shift/riduzione
+
+
+Grammatica
+
+    0 $accept: program "end of file"
+
+    1 program: chunk
+
+    2 chunk: stats
+    3      | stats laststatment optional_semicolon
+
+    4 stats: %empty
+    5      | stats stat optional_semicolon
+
+    6 optional_semicolon: %empty
+    7                   | SEMICOLON
+
+    8 block: chunk
+
+    9 laststatment: RETURN oexplist
+   10             | BREAK
+
+   11 stat: varlist EQUAL explist
+   12     | functioncall
+   13     | DO block END1
+   14     | WHILE exp DO block END1
+   15     | REPEAT block UNTIL exp
+   16     | IF exp THEN block elseif_statement else_statement END1
+   17     | FOR NAME EQUAL exp COMMA exp oexpcomma DO block END1
+   18     | FOR namelist IN explist DO block END1
+   19     | FUNCTION funcname funcbody
+   20     | LOCAL FUNCTION NAME funcbody
+   21     | LOCAL namelist
+   22     | LOCAL namelist EQUAL explist
+
+   23 oexpcomma: %empty
+   24          | COMMA exp
+
+   25 elseif_statement: %empty
+   26                 | elseif_statement ELSEIF exp THEN block
+
+   27 else_statement: %empty
+   28               | ELSE block
+
+   29 funcname: NAME
+   30         | funcname POINT NAME ofuncname
+
+   31 ofuncname: %empty
+   32          | COLON NAME
+
+   33 varlist: var
+   34        | varlist COMMA var
+
+   35 var: NAME
+   36    | prefixexp OSBRACKET exp CSBRACKET
+   37    | prefixexp POINT NAME
+
+   38 namelist: NAME
+   39         | namelist COMMA NAME
+
+   40 explist: exp
+   41        | explist COMMA exp
+
+   42 oexplist: %empty
+   43         | explist
+
+   44 exp: NIL
+   45    | FALSE
+   46    | TRUE
+   47    | NUMBER
+   48    | STRING
+   49    | THREEPOINT
+   50    | function
+   51    | prefixexp
+   52    | tableconstructor
+   53    | exp MINUS exp
+   54    | exp PLUS exp
+   55    | exp ASTERISK exp
+   56    | exp FSLASH exp
+   57    | exp ARCH exp
+   58    | exp TWOPOINT exp
+   59    | exp PERCENTAGE exp
+   60    | exp LOWER exp
+   61    | exp ELOWER exp
+   62    | exp GREATER exp
+   63    | exp EGREATER exp
+   64    | exp DEQUAL exp
+   65    | exp ETILDA exp
+   66    | exp AND exp
+   67    | exp OR exp
+   68    | MINUS exp
+   69    | NOT exp
+   70    | HASH exp
+
+   71 prefixexp: var
+   72          | functioncall
+   73          | OPARENTHESIS exp CPARENTHESIS
+
+   74 functioncall: prefixexp args
+   75             | prefixexp COLON NAME args
+
+   76 args: OPARENTHESIS oexplist CPARENTHESIS
+   77     | tableconstructor
+   78     | STRING
+
+   79 function: FUNCTION funcbody
+
+   80 funcbody: OPARENTHESIS opt_parlist CPARENTHESIS block END1
+
+   81 parlist: namelist oparlist
+   82        | THREEPOINT
+
+   83 oparlist: %empty
+   84         | COMMA THREEPOINT
+
+   85 opt_parlist: %empty
+   86            | parlist
+
+   87 tableconstructor: OBRACKET ofieldlist CBRACKET
+
+   88 fieldlist: field
+   89          | fieldlist fieldsep field
+
+   90 ofieldlist: %empty
+   91           | fieldlist ofieldsep
+
+   92 field: OSBRACKET exp CSBRACKET EQUAL exp
+   93      | NAME EQUAL exp
+   94      | exp
+
+   95 fieldsep: COMMA
+   96         | SEMICOLON
+
+   97 ofieldsep: %empty
+   98          | fieldsep
+
+
+Simboli terminali e regole in cui appaiono
+
+"end of file" (0) 0
+error (256)
+SEMICOLON (258) 7 96
+NAME (259) 17 20 29 30 32 35 37 38 39 75 93
+BREAK (260) 10
+RETURN (261) 9
+EQUAL (262) 11 17 22 92 93
+COMMA (263) 17 24 34 39 41 84 95
+OSBRACKET (264) 36 92
+CSBRACKET (265) 36 92
+POINT (266) 30 37
+OPARENTHESIS (267) 73 76 80
+CPARENTHESIS (268) 73 76 80
+COLON (269) 32 75
+STRING (270) 48 78
+OBRACKET (271) 87
+CBRACKET (272) 87
+DO (273) 13 14 17 18
+END1 (274) 13 14 16 17 18 80
+WHILE (275) 14
+REPEAT (276) 15
+UNTIL (277) 15
+IF (278) 16
+THEN (279) 16 26
+ELSEIF (280) 26
+ELSE (281) 28
+FOR (282) 17 18
+IN (283) 18
+FUNCTION (284) 19 20 79
+LOCAL (285) 20 21 22
+THREEPOINT (286) 49 82 84
+PLUS (287) 54
+MINUS (288) 53 68
+ASTERISK (289) 55
+FSLASH (290) 56
+HASH (291) 70
+ARCH (292) 57
+PERCENTAGE (293) 59
+LOWER (294) 60
+GREATER (295) 62
+NOT (296) 69
+AND (297) 66
+OR (298) 67
+ELOWER (299) 61
+EGREATER (300) 63
+ETILDA (301) 65
+DEQUAL (302) 64
+TWOPOINT (303) 58
+SDQUOTE (304)
+SQUOTE (305)
+NIL (306) 44
+FALSE (307) 45
+TRUE (308) 46
+NUMBER (309) 47
+
+
+Simboli nonterminali e regole in cui appaiono
+
+$accept (55)
+    nel primo membro: 0
+program (56)
+    nel primo membro: 1, nel secondo membro: 0
+chunk (57)
+    nel primo membro: 2 3, nel secondo membro: 1 8
+stats (58)
+    nel primo membro: 4 5, nel secondo membro: 2 3 5
+optional_semicolon (59)
+    nel primo membro: 6 7, nel secondo membro: 3 5
+block (60)
+    nel primo membro: 8, nel secondo membro: 13 14 15 16 17 18 26 28
+    80
+laststatment (61)
+    nel primo membro: 9 10, nel secondo membro: 3
+stat (62)
+    nel primo membro: 11 12 13 14 15 16 17 18 19 20 21 22, nel secondo membro:
+    5
+oexpcomma (63)
+    nel primo membro: 23 24, nel secondo membro: 17
+elseif_statement (64)
+    nel primo membro: 25 26, nel secondo membro: 16 26
+else_statement (65)
+    nel primo membro: 27 28, nel secondo membro: 16
+funcname (66)
+    nel primo membro: 29 30, nel secondo membro: 19 30
+ofuncname (67)
+    nel primo membro: 31 32, nel secondo membro: 30
+varlist (68)
+    nel primo membro: 33 34, nel secondo membro: 11 34
+var (69)
+    nel primo membro: 35 36 37, nel secondo membro: 33 34 71
+namelist (70)
+    nel primo membro: 38 39, nel secondo membro: 18 21 22 39 81
+explist (71)
+    nel primo membro: 40 41, nel secondo membro: 11 18 22 41 43
+oexplist (72)
+    nel primo membro: 42 43, nel secondo membro: 9 76
+exp (73)
+    nel primo membro: 44 45 46 47 48 49 50 51 52 53 54 55 56 57 58
+    59 60 61 62 63 64 65 66 67 68 69 70, nel secondo membro: 14 15
+    16 17 24 26 36 40 41 53 54 55 56 57 58 59 60 61 62 63 64 65 66
+    67 68 69 70 73 92 93 94
+prefixexp (74)
+    nel primo membro: 71 72 73, nel secondo membro: 36 37 51 74 75
+functioncall (75)
+    nel primo membro: 74 75, nel secondo membro: 12 72
+args (76)
+    nel primo membro: 76 77 78, nel secondo membro: 74 75
+function (77)
+    nel primo membro: 79, nel secondo membro: 50
+funcbody (78)
+    nel primo membro: 80, nel secondo membro: 19 20 79
+parlist (79)
+    nel primo membro: 81 82, nel secondo membro: 86
+oparlist (80)
+    nel primo membro: 83 84, nel secondo membro: 81
+opt_parlist (81)
+    nel primo membro: 85 86, nel secondo membro: 80
+tableconstructor (82)
+    nel primo membro: 87, nel secondo membro: 52 77
+fieldlist (83)
+    nel primo membro: 88 89, nel secondo membro: 89 91
+ofieldlist (84)
+    nel primo membro: 90 91, nel secondo membro: 87
+field (85)
+    nel primo membro: 92 93 94, nel secondo membro: 88 89
+fieldsep (86)
+    nel primo membro: 95 96, nel secondo membro: 89 98
+ofieldsep (87)
+    nel primo membro: 97 98, nel secondo membro: 91
+
+
+Stato 0
+
+    0 $accept: . program "end of file"
+
+    $default  riduzione con la regola 4 (stats)
+
+    program  prosecuzione allo stato 1
+    chunk    prosecuzione allo stato 2
+    stats    prosecuzione allo stato 3
+
+
+Stato 1
+
+    0 $accept: program . "end of file"
+
+    "end of file"  shift e prosecuzione allo stato 4
+
+
+Stato 2
+
+    1 program: chunk .
+
+    $default  riduzione con la regola 1 (program)
+
+
+Stato 3
+
+    2 chunk: stats .
+    3      | stats . laststatment optional_semicolon
+    5 stats: stats . stat optional_semicolon
+
+    NAME          shift e prosecuzione allo stato 5
+    BREAK         shift e prosecuzione allo stato 6
+    RETURN        shift e prosecuzione allo stato 7
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    DO            shift e prosecuzione allo stato 9
+    WHILE         shift e prosecuzione allo stato 10
+    REPEAT        shift e prosecuzione allo stato 11
+    IF            shift e prosecuzione allo stato 12
+    FOR           shift e prosecuzione allo stato 13
+    FUNCTION      shift e prosecuzione allo stato 14
+    LOCAL         shift e prosecuzione allo stato 15
+
+    $default  riduzione con la regola 2 (chunk)
+
+    laststatment  prosecuzione allo stato 16
+    stat          prosecuzione allo stato 17
+    varlist       prosecuzione allo stato 18
+    var           prosecuzione allo stato 19
+    prefixexp     prosecuzione allo stato 20
+    functioncall  prosecuzione allo stato 21
+
+
+Stato 4
+
+    0 $accept: program "end of file" .
+
+    $default  accetta
+
+
+Stato 5
+
+   35 var: NAME .
+
+    $default  riduzione con la regola 35 (var)
+
+
+Stato 6
+
+   10 laststatment: BREAK .
+
+    $default  riduzione con la regola 10 (laststatment)
+
+
+Stato 7
+
+    9 laststatment: RETURN . oexplist
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    $default  riduzione con la regola 42 (oexplist)
+
+    var               prosecuzione allo stato 33
+    explist           prosecuzione allo stato 34
+    oexplist          prosecuzione allo stato 35
+    exp               prosecuzione allo stato 36
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 8
+
+   73 prefixexp: OPARENTHESIS . exp CPARENTHESIS
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 41
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 9
+
+   13 stat: DO . block END1
+
+    $default  riduzione con la regola 4 (stats)
+
+    chunk  prosecuzione allo stato 42
+    stats  prosecuzione allo stato 3
+    block  prosecuzione allo stato 43
+
+
+Stato 10
+
+   14 stat: WHILE . exp DO block END1
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 44
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 11
+
+   15 stat: REPEAT . block UNTIL exp
+
+    $default  riduzione con la regola 4 (stats)
+
+    chunk  prosecuzione allo stato 42
+    stats  prosecuzione allo stato 3
+    block  prosecuzione allo stato 45
+
+
+Stato 12
+
+   16 stat: IF . exp THEN block elseif_statement else_statement END1
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 46
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 13
+
+   17 stat: FOR . NAME EQUAL exp COMMA exp oexpcomma DO block END1
+   18     | FOR . namelist IN explist DO block END1
+
+    NAME  shift e prosecuzione allo stato 47
+
+    namelist  prosecuzione allo stato 48
+
+
+Stato 14
+
+   19 stat: FUNCTION . funcname funcbody
+
+    NAME  shift e prosecuzione allo stato 49
+
+    funcname  prosecuzione allo stato 50
+
+
+Stato 15
+
+   20 stat: LOCAL . FUNCTION NAME funcbody
+   21     | LOCAL . namelist
+   22     | LOCAL . namelist EQUAL explist
+
+    NAME      shift e prosecuzione allo stato 51
+    FUNCTION  shift e prosecuzione allo stato 52
+
+    namelist  prosecuzione allo stato 53
+
+
+Stato 16
+
+    3 chunk: stats laststatment . optional_semicolon
+
+    SEMICOLON  shift e prosecuzione allo stato 54
+
+    $default  riduzione con la regola 6 (optional_semicolon)
+
+    optional_semicolon  prosecuzione allo stato 55
+
+
+Stato 17
+
+    5 stats: stats stat . optional_semicolon
+
+    SEMICOLON  shift e prosecuzione allo stato 54
+
+    $default  riduzione con la regola 6 (optional_semicolon)
+
+    optional_semicolon  prosecuzione allo stato 56
+
+
+Stato 18
+
+   11 stat: varlist . EQUAL explist
+   34 varlist: varlist . COMMA var
+
+    EQUAL  shift e prosecuzione allo stato 57
+    COMMA  shift e prosecuzione allo stato 58
+
+
+Stato 19
+
+   33 varlist: var .
+   71 prefixexp: var .
+
+    EQUAL     riduzione con la regola 33 (varlist)
+    COMMA     riduzione con la regola 33 (varlist)
+    $default  riduzione con la regola 71 (prefixexp)
+
+
+Stato 20
+
+   36 var: prefixexp . OSBRACKET exp CSBRACKET
+   37    | prefixexp . POINT NAME
+   74 functioncall: prefixexp . args
+   75             | prefixexp . COLON NAME args
+
+    OSBRACKET     shift e prosecuzione allo stato 59
+    POINT         shift e prosecuzione allo stato 60
+    OPARENTHESIS  shift e prosecuzione allo stato 61
+    COLON         shift e prosecuzione allo stato 62
+    STRING        shift e prosecuzione allo stato 63
+    OBRACKET      shift e prosecuzione allo stato 23
+
+    args              prosecuzione allo stato 64
+    tableconstructor  prosecuzione allo stato 65
+
+
+Stato 21
+
+   12 stat: functioncall .
+   72 prefixexp: functioncall .
+
+    OSBRACKET     riduzione con la regola 72 (prefixexp)
+    POINT         riduzione con la regola 72 (prefixexp)
+    OPARENTHESIS  riduzione con la regola 12 (stat)
+    OPARENTHESIS  [riduzione con la regola 72 (prefixexp)]
+    COLON         riduzione con la regola 72 (prefixexp)
+    STRING        riduzione con la regola 72 (prefixexp)
+    OBRACKET      riduzione con la regola 72 (prefixexp)
+    $default      riduzione con la regola 12 (stat)
+
+
+Stato 22
+
+   48 exp: STRING .
+
+    $default  riduzione con la regola 48 (exp)
+
+
+Stato 23
+
+   87 tableconstructor: OBRACKET . ofieldlist CBRACKET
+
+    NAME          shift e prosecuzione allo stato 66
+    OSBRACKET     shift e prosecuzione allo stato 67
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    $default  riduzione con la regola 90 (ofieldlist)
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 68
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+    fieldlist         prosecuzione allo stato 69
+    ofieldlist        prosecuzione allo stato 70
+    field             prosecuzione allo stato 71
+
+
+Stato 24
+
+   79 function: FUNCTION . funcbody
+
+    OPARENTHESIS  shift e prosecuzione allo stato 72
+
+    funcbody  prosecuzione allo stato 73
+
+
+Stato 25
+
+   49 exp: THREEPOINT .
+
+    $default  riduzione con la regola 49 (exp)
+
+
+Stato 26
+
+   68 exp: MINUS . exp
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 74
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 27
+
+   70 exp: HASH . exp
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 75
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 28
+
+   69 exp: NOT . exp
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 76
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 29
+
+   44 exp: NIL .
+
+    $default  riduzione con la regola 44 (exp)
+
+
+Stato 30
+
+   45 exp: FALSE .
+
+    $default  riduzione con la regola 45 (exp)
+
+
+Stato 31
+
+   46 exp: TRUE .
+
+    $default  riduzione con la regola 46 (exp)
+
+
+Stato 32
+
+   47 exp: NUMBER .
+
+    $default  riduzione con la regola 47 (exp)
+
+
+Stato 33
+
+   71 prefixexp: var .
+
+    $default  riduzione con la regola 71 (prefixexp)
+
+
+Stato 34
+
+   41 explist: explist . COMMA exp
+   43 oexplist: explist .
+
+    COMMA  shift e prosecuzione allo stato 77
+
+    $default  riduzione con la regola 43 (oexplist)
+
+
+Stato 35
+
+    9 laststatment: RETURN oexplist .
+
+    $default  riduzione con la regola 9 (laststatment)
+
+
+Stato 36
+
+   40 explist: exp .
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+
+    PLUS        shift e prosecuzione allo stato 78
+    MINUS       shift e prosecuzione allo stato 79
+    ASTERISK    shift e prosecuzione allo stato 80
+    FSLASH      shift e prosecuzione allo stato 81
+    ARCH        shift e prosecuzione allo stato 82
+    PERCENTAGE  shift e prosecuzione allo stato 83
+    LOWER       shift e prosecuzione allo stato 84
+    GREATER     shift e prosecuzione allo stato 85
+    AND         shift e prosecuzione allo stato 86
+    OR          shift e prosecuzione allo stato 87
+    ELOWER      shift e prosecuzione allo stato 88
+    EGREATER    shift e prosecuzione allo stato 89
+    ETILDA      shift e prosecuzione allo stato 90
+    DEQUAL      shift e prosecuzione allo stato 91
+    TWOPOINT    shift e prosecuzione allo stato 92
+
+    $default  riduzione con la regola 40 (explist)
+
+
+Stato 37
+
+   36 var: prefixexp . OSBRACKET exp CSBRACKET
+   37    | prefixexp . POINT NAME
+   51 exp: prefixexp .
+   74 functioncall: prefixexp . args
+   75             | prefixexp . COLON NAME args
+
+    OSBRACKET     shift e prosecuzione allo stato 59
+    POINT         shift e prosecuzione allo stato 60
+    OPARENTHESIS  shift e prosecuzione allo stato 61
+    COLON         shift e prosecuzione allo stato 62
+    STRING        shift e prosecuzione allo stato 63
+    OBRACKET      shift e prosecuzione allo stato 23
+
+    OPARENTHESIS  [riduzione con la regola 51 (exp)]
+    $default      riduzione con la regola 51 (exp)
+
+    args              prosecuzione allo stato 64
+    tableconstructor  prosecuzione allo stato 65
+
+
+Stato 38
+
+   72 prefixexp: functioncall .
+
+    $default  riduzione con la regola 72 (prefixexp)
+
+
+Stato 39
+
+   50 exp: function .
+
+    $default  riduzione con la regola 50 (exp)
+
+
+Stato 40
+
+   52 exp: tableconstructor .
+
+    $default  riduzione con la regola 52 (exp)
+
+
+Stato 41
+
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+   73 prefixexp: OPARENTHESIS exp . CPARENTHESIS
+
+    CPARENTHESIS  shift e prosecuzione allo stato 93
+    PLUS          shift e prosecuzione allo stato 78
+    MINUS         shift e prosecuzione allo stato 79
+    ASTERISK      shift e prosecuzione allo stato 80
+    FSLASH        shift e prosecuzione allo stato 81
+    ARCH          shift e prosecuzione allo stato 82
+    PERCENTAGE    shift e prosecuzione allo stato 83
+    LOWER         shift e prosecuzione allo stato 84
+    GREATER       shift e prosecuzione allo stato 85
+    AND           shift e prosecuzione allo stato 86
+    OR            shift e prosecuzione allo stato 87
+    ELOWER        shift e prosecuzione allo stato 88
+    EGREATER      shift e prosecuzione allo stato 89
+    ETILDA        shift e prosecuzione allo stato 90
+    DEQUAL        shift e prosecuzione allo stato 91
+    TWOPOINT      shift e prosecuzione allo stato 92
+
+
+Stato 42
+
+    8 block: chunk .
+
+    $default  riduzione con la regola 8 (block)
+
+
+Stato 43
+
+   13 stat: DO block . END1
+
+    END1  shift e prosecuzione allo stato 94
+
+
+Stato 44
+
+   14 stat: WHILE exp . DO block END1
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+
+    DO          shift e prosecuzione allo stato 95
+    PLUS        shift e prosecuzione allo stato 78
+    MINUS       shift e prosecuzione allo stato 79
+    ASTERISK    shift e prosecuzione allo stato 80
+    FSLASH      shift e prosecuzione allo stato 81
+    ARCH        shift e prosecuzione allo stato 82
+    PERCENTAGE  shift e prosecuzione allo stato 83
+    LOWER       shift e prosecuzione allo stato 84
+    GREATER     shift e prosecuzione allo stato 85
+    AND         shift e prosecuzione allo stato 86
+    OR          shift e prosecuzione allo stato 87
+    ELOWER      shift e prosecuzione allo stato 88
+    EGREATER    shift e prosecuzione allo stato 89
+    ETILDA      shift e prosecuzione allo stato 90
+    DEQUAL      shift e prosecuzione allo stato 91
+    TWOPOINT    shift e prosecuzione allo stato 92
+
+
+Stato 45
+
+   15 stat: REPEAT block . UNTIL exp
+
+    UNTIL  shift e prosecuzione allo stato 96
+
+
+Stato 46
+
+   16 stat: IF exp . THEN block elseif_statement else_statement END1
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+
+    THEN        shift e prosecuzione allo stato 97
+    PLUS        shift e prosecuzione allo stato 78
+    MINUS       shift e prosecuzione allo stato 79
+    ASTERISK    shift e prosecuzione allo stato 80
+    FSLASH      shift e prosecuzione allo stato 81
+    ARCH        shift e prosecuzione allo stato 82
+    PERCENTAGE  shift e prosecuzione allo stato 83
+    LOWER       shift e prosecuzione allo stato 84
+    GREATER     shift e prosecuzione allo stato 85
+    AND         shift e prosecuzione allo stato 86
+    OR          shift e prosecuzione allo stato 87
+    ELOWER      shift e prosecuzione allo stato 88
+    EGREATER    shift e prosecuzione allo stato 89
+    ETILDA      shift e prosecuzione allo stato 90
+    DEQUAL      shift e prosecuzione allo stato 91
+    TWOPOINT    shift e prosecuzione allo stato 92
+
+
+Stato 47
+
+   17 stat: FOR NAME . EQUAL exp COMMA exp oexpcomma DO block END1
+   38 namelist: NAME .
+
+    EQUAL  shift e prosecuzione allo stato 98
+
+    $default  riduzione con la regola 38 (namelist)
+
+
+Stato 48
+
+   18 stat: FOR namelist . IN explist DO block END1
+   39 namelist: namelist . COMMA NAME
+
+    COMMA  shift e prosecuzione allo stato 99
+    IN     shift e prosecuzione allo stato 100
+
+
+Stato 49
+
+   29 funcname: NAME .
+
+    $default  riduzione con la regola 29 (funcname)
+
+
+Stato 50
+
+   19 stat: FUNCTION funcname . funcbody
+   30 funcname: funcname . POINT NAME ofuncname
+
+    POINT         shift e prosecuzione allo stato 101
+    OPARENTHESIS  shift e prosecuzione allo stato 72
+
+    funcbody  prosecuzione allo stato 102
+
+
+Stato 51
+
+   38 namelist: NAME .
+
+    $default  riduzione con la regola 38 (namelist)
+
+
+Stato 52
+
+   20 stat: LOCAL FUNCTION . NAME funcbody
+
+    NAME  shift e prosecuzione allo stato 103
+
+
+Stato 53
+
+   21 stat: LOCAL namelist .
+   22     | LOCAL namelist . EQUAL explist
+   39 namelist: namelist . COMMA NAME
+
+    EQUAL  shift e prosecuzione allo stato 104
+    COMMA  shift e prosecuzione allo stato 99
+
+    $default  riduzione con la regola 21 (stat)
+
+
+Stato 54
+
+    7 optional_semicolon: SEMICOLON .
+
+    $default  riduzione con la regola 7 (optional_semicolon)
+
+
+Stato 55
+
+    3 chunk: stats laststatment optional_semicolon .
+
+    $default  riduzione con la regola 3 (chunk)
+
+
+Stato 56
+
+    5 stats: stats stat optional_semicolon .
+
+    $default  riduzione con la regola 5 (stats)
+
+
+Stato 57
+
+   11 stat: varlist EQUAL . explist
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    explist           prosecuzione allo stato 105
+    exp               prosecuzione allo stato 36
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 58
+
+   34 varlist: varlist COMMA . var
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+
+    var           prosecuzione allo stato 106
+    prefixexp     prosecuzione allo stato 20
+    functioncall  prosecuzione allo stato 38
+
+
+Stato 59
+
+   36 var: prefixexp OSBRACKET . exp CSBRACKET
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 107
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 60
+
+   37 var: prefixexp POINT . NAME
+
+    NAME  shift e prosecuzione allo stato 108
+
+
+Stato 61
+
+   76 args: OPARENTHESIS . oexplist CPARENTHESIS
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    $default  riduzione con la regola 42 (oexplist)
+
+    var               prosecuzione allo stato 33
+    explist           prosecuzione allo stato 34
+    oexplist          prosecuzione allo stato 109
+    exp               prosecuzione allo stato 36
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 62
+
+   75 functioncall: prefixexp COLON . NAME args
+
+    NAME  shift e prosecuzione allo stato 110
+
+
+Stato 63
+
+   78 args: STRING .
+
+    $default  riduzione con la regola 78 (args)
+
+
+Stato 64
+
+   74 functioncall: prefixexp args .
+
+    $default  riduzione con la regola 74 (functioncall)
+
+
+Stato 65
+
+   77 args: tableconstructor .
+
+    $default  riduzione con la regola 77 (args)
+
+
+Stato 66
+
+   35 var: NAME .
+   93 field: NAME . EQUAL exp
+
+    EQUAL  shift e prosecuzione allo stato 111
+
+    $default  riduzione con la regola 35 (var)
+
+
+Stato 67
+
+   92 field: OSBRACKET . exp CSBRACKET EQUAL exp
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 112
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 68
+
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+   94 field: exp .
+
+    PLUS        shift e prosecuzione allo stato 78
+    MINUS       shift e prosecuzione allo stato 79
+    ASTERISK    shift e prosecuzione allo stato 80
+    FSLASH      shift e prosecuzione allo stato 81
+    ARCH        shift e prosecuzione allo stato 82
+    PERCENTAGE  shift e prosecuzione allo stato 83
+    LOWER       shift e prosecuzione allo stato 84
+    GREATER     shift e prosecuzione allo stato 85
+    AND         shift e prosecuzione allo stato 86
+    OR          shift e prosecuzione allo stato 87
+    ELOWER      shift e prosecuzione allo stato 88
+    EGREATER    shift e prosecuzione allo stato 89
+    ETILDA      shift e prosecuzione allo stato 90
+    DEQUAL      shift e prosecuzione allo stato 91
+    TWOPOINT    shift e prosecuzione allo stato 92
+
+    $default  riduzione con la regola 94 (field)
+
+
+Stato 69
+
+   89 fieldlist: fieldlist . fieldsep field
+   91 ofieldlist: fieldlist . ofieldsep
+
+    SEMICOLON  shift e prosecuzione allo stato 113
+    COMMA      shift e prosecuzione allo stato 114
+
+    $default  riduzione con la regola 97 (ofieldsep)
+
+    fieldsep   prosecuzione allo stato 115
+    ofieldsep  prosecuzione allo stato 116
+
+
+Stato 70
+
+   87 tableconstructor: OBRACKET ofieldlist . CBRACKET
+
+    CBRACKET  shift e prosecuzione allo stato 117
+
+
+Stato 71
+
+   88 fieldlist: field .
+
+    $default  riduzione con la regola 88 (fieldlist)
+
+
+Stato 72
+
+   80 funcbody: OPARENTHESIS . opt_parlist CPARENTHESIS block END1
+
+    NAME        shift e prosecuzione allo stato 51
+    THREEPOINT  shift e prosecuzione allo stato 118
+
+    $default  riduzione con la regola 85 (opt_parlist)
+
+    namelist     prosecuzione allo stato 119
+    parlist      prosecuzione allo stato 120
+    opt_parlist  prosecuzione allo stato 121
+
+
+Stato 73
+
+   79 function: FUNCTION funcbody .
+
+    $default  riduzione con la regola 79 (function)
+
+
+Stato 74
+
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+   68    | MINUS exp .
+
+    ASTERISK    shift e prosecuzione allo stato 80
+    FSLASH      shift e prosecuzione allo stato 81
+    ARCH        shift e prosecuzione allo stato 82
+    PERCENTAGE  shift e prosecuzione allo stato 83
+    LOWER       shift e prosecuzione allo stato 84
+    GREATER     shift e prosecuzione allo stato 85
+    AND         shift e prosecuzione allo stato 86
+    OR          shift e prosecuzione allo stato 87
+    ELOWER      shift e prosecuzione allo stato 88
+    EGREATER    shift e prosecuzione allo stato 89
+    ETILDA      shift e prosecuzione allo stato 90
+    DEQUAL      shift e prosecuzione allo stato 91
+    TWOPOINT    shift e prosecuzione allo stato 92
+
+    $default  riduzione con la regola 68 (exp)
+
+
+Stato 75
+
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+   70    | HASH exp .
+
+    $default  riduzione con la regola 70 (exp)
+
+
+Stato 76
+
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+   69    | NOT exp .
+
+    $default  riduzione con la regola 69 (exp)
+
+
+Stato 77
+
+   41 explist: explist COMMA . exp
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 122
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 78
+
+   54 exp: exp PLUS . exp
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 123
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 79
+
+   53 exp: exp MINUS . exp
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 124
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 80
+
+   55 exp: exp ASTERISK . exp
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 125
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 81
+
+   56 exp: exp FSLASH . exp
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 126
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 82
+
+   57 exp: exp ARCH . exp
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 127
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 83
+
+   59 exp: exp PERCENTAGE . exp
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 128
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 84
+
+   60 exp: exp LOWER . exp
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 129
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 85
+
+   62 exp: exp GREATER . exp
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 130
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 86
+
+   66 exp: exp AND . exp
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 131
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 87
+
+   67 exp: exp OR . exp
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 132
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 88
+
+   61 exp: exp ELOWER . exp
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 133
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 89
+
+   63 exp: exp EGREATER . exp
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 134
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 90
+
+   65 exp: exp ETILDA . exp
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 135
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 91
+
+   64 exp: exp DEQUAL . exp
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 136
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 92
+
+   58 exp: exp TWOPOINT . exp
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 137
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 93
+
+   73 prefixexp: OPARENTHESIS exp CPARENTHESIS .
+
+    $default  riduzione con la regola 73 (prefixexp)
+
+
+Stato 94
+
+   13 stat: DO block END1 .
+
+    $default  riduzione con la regola 13 (stat)
+
+
+Stato 95
+
+   14 stat: WHILE exp DO . block END1
+
+    $default  riduzione con la regola 4 (stats)
+
+    chunk  prosecuzione allo stato 42
+    stats  prosecuzione allo stato 3
+    block  prosecuzione allo stato 138
+
+
+Stato 96
+
+   15 stat: REPEAT block UNTIL . exp
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 139
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 97
+
+   16 stat: IF exp THEN . block elseif_statement else_statement END1
+
+    $default  riduzione con la regola 4 (stats)
+
+    chunk  prosecuzione allo stato 42
+    stats  prosecuzione allo stato 3
+    block  prosecuzione allo stato 140
+
+
+Stato 98
+
+   17 stat: FOR NAME EQUAL . exp COMMA exp oexpcomma DO block END1
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 141
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 99
+
+   39 namelist: namelist COMMA . NAME
+
+    NAME  shift e prosecuzione allo stato 142
+
+
+Stato 100
+
+   18 stat: FOR namelist IN . explist DO block END1
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    explist           prosecuzione allo stato 143
+    exp               prosecuzione allo stato 36
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 101
+
+   30 funcname: funcname POINT . NAME ofuncname
+
+    NAME  shift e prosecuzione allo stato 144
+
+
+Stato 102
+
+   19 stat: FUNCTION funcname funcbody .
+
+    $default  riduzione con la regola 19 (stat)
+
+
+Stato 103
+
+   20 stat: LOCAL FUNCTION NAME . funcbody
+
+    OPARENTHESIS  shift e prosecuzione allo stato 72
+
+    funcbody  prosecuzione allo stato 145
+
+
+Stato 104
+
+   22 stat: LOCAL namelist EQUAL . explist
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    explist           prosecuzione allo stato 146
+    exp               prosecuzione allo stato 36
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 105
+
+   11 stat: varlist EQUAL explist .
+   41 explist: explist . COMMA exp
+
+    COMMA  shift e prosecuzione allo stato 77
+
+    $default  riduzione con la regola 11 (stat)
+
+
+Stato 106
+
+   34 varlist: varlist COMMA var .
+   71 prefixexp: var .
+
+    EQUAL     riduzione con la regola 34 (varlist)
+    COMMA     riduzione con la regola 34 (varlist)
+    $default  riduzione con la regola 71 (prefixexp)
+
+
+Stato 107
+
+   36 var: prefixexp OSBRACKET exp . CSBRACKET
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+
+    CSBRACKET   shift e prosecuzione allo stato 147
+    PLUS        shift e prosecuzione allo stato 78
+    MINUS       shift e prosecuzione allo stato 79
+    ASTERISK    shift e prosecuzione allo stato 80
+    FSLASH      shift e prosecuzione allo stato 81
+    ARCH        shift e prosecuzione allo stato 82
+    PERCENTAGE  shift e prosecuzione allo stato 83
+    LOWER       shift e prosecuzione allo stato 84
+    GREATER     shift e prosecuzione allo stato 85
+    AND         shift e prosecuzione allo stato 86
+    OR          shift e prosecuzione allo stato 87
+    ELOWER      shift e prosecuzione allo stato 88
+    EGREATER    shift e prosecuzione allo stato 89
+    ETILDA      shift e prosecuzione allo stato 90
+    DEQUAL      shift e prosecuzione allo stato 91
+    TWOPOINT    shift e prosecuzione allo stato 92
+
+
+Stato 108
+
+   37 var: prefixexp POINT NAME .
+
+    $default  riduzione con la regola 37 (var)
+
+
+Stato 109
+
+   76 args: OPARENTHESIS oexplist . CPARENTHESIS
+
+    CPARENTHESIS  shift e prosecuzione allo stato 148
+
+
+Stato 110
+
+   75 functioncall: prefixexp COLON NAME . args
+
+    OPARENTHESIS  shift e prosecuzione allo stato 61
+    STRING        shift e prosecuzione allo stato 63
+    OBRACKET      shift e prosecuzione allo stato 23
+
+    args              prosecuzione allo stato 149
+    tableconstructor  prosecuzione allo stato 65
+
+
+Stato 111
+
+   93 field: NAME EQUAL . exp
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 150
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 112
+
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+   92 field: OSBRACKET exp . CSBRACKET EQUAL exp
+
+    CSBRACKET   shift e prosecuzione allo stato 151
+    PLUS        shift e prosecuzione allo stato 78
+    MINUS       shift e prosecuzione allo stato 79
+    ASTERISK    shift e prosecuzione allo stato 80
+    FSLASH      shift e prosecuzione allo stato 81
+    ARCH        shift e prosecuzione allo stato 82
+    PERCENTAGE  shift e prosecuzione allo stato 83
+    LOWER       shift e prosecuzione allo stato 84
+    GREATER     shift e prosecuzione allo stato 85
+    AND         shift e prosecuzione allo stato 86
+    OR          shift e prosecuzione allo stato 87
+    ELOWER      shift e prosecuzione allo stato 88
+    EGREATER    shift e prosecuzione allo stato 89
+    ETILDA      shift e prosecuzione allo stato 90
+    DEQUAL      shift e prosecuzione allo stato 91
+    TWOPOINT    shift e prosecuzione allo stato 92
+
+
+Stato 113
+
+   96 fieldsep: SEMICOLON .
+
+    $default  riduzione con la regola 96 (fieldsep)
+
+
+Stato 114
+
+   95 fieldsep: COMMA .
+
+    $default  riduzione con la regola 95 (fieldsep)
+
+
+Stato 115
+
+   89 fieldlist: fieldlist fieldsep . field
+   98 ofieldsep: fieldsep .
+
+    NAME          shift e prosecuzione allo stato 66
+    OSBRACKET     shift e prosecuzione allo stato 67
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    $default  riduzione con la regola 98 (ofieldsep)
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 68
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+    field             prosecuzione allo stato 152
+
+
+Stato 116
+
+   91 ofieldlist: fieldlist ofieldsep .
+
+    $default  riduzione con la regola 91 (ofieldlist)
+
+
+Stato 117
+
+   87 tableconstructor: OBRACKET ofieldlist CBRACKET .
+
+    $default  riduzione con la regola 87 (tableconstructor)
+
+
+Stato 118
+
+   82 parlist: THREEPOINT .
+
+    $default  riduzione con la regola 82 (parlist)
+
+
+Stato 119
+
+   39 namelist: namelist . COMMA NAME
+   81 parlist: namelist . oparlist
+
+    COMMA  shift e prosecuzione allo stato 153
+
+    $default  riduzione con la regola 83 (oparlist)
+
+    oparlist  prosecuzione allo stato 154
+
+
+Stato 120
+
+   86 opt_parlist: parlist .
+
+    $default  riduzione con la regola 86 (opt_parlist)
+
+
+Stato 121
+
+   80 funcbody: OPARENTHESIS opt_parlist . CPARENTHESIS block END1
+
+    CPARENTHESIS  shift e prosecuzione allo stato 155
+
+
+Stato 122
+
+   41 explist: explist COMMA exp .
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+
+    PLUS        shift e prosecuzione allo stato 78
+    MINUS       shift e prosecuzione allo stato 79
+    ASTERISK    shift e prosecuzione allo stato 80
+    FSLASH      shift e prosecuzione allo stato 81
+    ARCH        shift e prosecuzione allo stato 82
+    PERCENTAGE  shift e prosecuzione allo stato 83
+    LOWER       shift e prosecuzione allo stato 84
+    GREATER     shift e prosecuzione allo stato 85
+    AND         shift e prosecuzione allo stato 86
+    OR          shift e prosecuzione allo stato 87
+    ELOWER      shift e prosecuzione allo stato 88
+    EGREATER    shift e prosecuzione allo stato 89
+    ETILDA      shift e prosecuzione allo stato 90
+    DEQUAL      shift e prosecuzione allo stato 91
+    TWOPOINT    shift e prosecuzione allo stato 92
+
+    $default  riduzione con la regola 41 (explist)
+
+
+Stato 123
+
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   54    | exp PLUS exp .
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+
+    ASTERISK    shift e prosecuzione allo stato 80
+    FSLASH      shift e prosecuzione allo stato 81
+    ARCH        shift e prosecuzione allo stato 82
+    PERCENTAGE  shift e prosecuzione allo stato 83
+    LOWER       shift e prosecuzione allo stato 84
+    GREATER     shift e prosecuzione allo stato 85
+    AND         shift e prosecuzione allo stato 86
+    OR          shift e prosecuzione allo stato 87
+    ELOWER      shift e prosecuzione allo stato 88
+    EGREATER    shift e prosecuzione allo stato 89
+    ETILDA      shift e prosecuzione allo stato 90
+    DEQUAL      shift e prosecuzione allo stato 91
+    TWOPOINT    shift e prosecuzione allo stato 92
+
+    $default  riduzione con la regola 54 (exp)
+
+
+Stato 124
+
+   53 exp: exp . MINUS exp
+   53    | exp MINUS exp .
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+
+    ASTERISK    shift e prosecuzione allo stato 80
+    FSLASH      shift e prosecuzione allo stato 81
+    ARCH        shift e prosecuzione allo stato 82
+    PERCENTAGE  shift e prosecuzione allo stato 83
+    LOWER       shift e prosecuzione allo stato 84
+    GREATER     shift e prosecuzione allo stato 85
+    AND         shift e prosecuzione allo stato 86
+    OR          shift e prosecuzione allo stato 87
+    ELOWER      shift e prosecuzione allo stato 88
+    EGREATER    shift e prosecuzione allo stato 89
+    ETILDA      shift e prosecuzione allo stato 90
+    DEQUAL      shift e prosecuzione allo stato 91
+    TWOPOINT    shift e prosecuzione allo stato 92
+
+    $default  riduzione con la regola 53 (exp)
+
+
+Stato 125
+
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   55    | exp ASTERISK exp .
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+
+    $default  riduzione con la regola 55 (exp)
+
+
+Stato 126
+
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   56    | exp FSLASH exp .
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+
+    $default  riduzione con la regola 56 (exp)
+
+
+Stato 127
+
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   57    | exp ARCH exp .
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+
+    $default  riduzione con la regola 57 (exp)
+
+
+Stato 128
+
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   59    | exp PERCENTAGE exp .
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+
+    $default  riduzione con la regola 59 (exp)
+
+
+Stato 129
+
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   60    | exp LOWER exp .
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+
+    $default  riduzione con la regola 60 (exp)
+
+
+Stato 130
+
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   62    | exp GREATER exp .
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+
+    $default  riduzione con la regola 62 (exp)
+
+
+Stato 131
+
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   66    | exp AND exp .
+   67    | exp . OR exp
+
+    $default  riduzione con la regola 66 (exp)
+
+
+Stato 132
+
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+   67    | exp OR exp .
+
+    $default  riduzione con la regola 67 (exp)
+
+
+Stato 133
+
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   61    | exp ELOWER exp .
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+
+    $default  riduzione con la regola 61 (exp)
+
+
+Stato 134
+
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   63    | exp EGREATER exp .
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+
+    $default  riduzione con la regola 63 (exp)
+
+
+Stato 135
+
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   65    | exp ETILDA exp .
+   66    | exp . AND exp
+   67    | exp . OR exp
+
+    $default  riduzione con la regola 65 (exp)
+
+
+Stato 136
+
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   64    | exp DEQUAL exp .
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+
+    $default  riduzione con la regola 64 (exp)
+
+
+Stato 137
+
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   58    | exp TWOPOINT exp .
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+
+    $default  riduzione con la regola 58 (exp)
+
+
+Stato 138
+
+   14 stat: WHILE exp DO block . END1
+
+    END1  shift e prosecuzione allo stato 156
+
+
+Stato 139
+
+   15 stat: REPEAT block UNTIL exp .
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+
+    PLUS        shift e prosecuzione allo stato 78
+    MINUS       shift e prosecuzione allo stato 79
+    ASTERISK    shift e prosecuzione allo stato 80
+    FSLASH      shift e prosecuzione allo stato 81
+    ARCH        shift e prosecuzione allo stato 82
+    PERCENTAGE  shift e prosecuzione allo stato 83
+    LOWER       shift e prosecuzione allo stato 84
+    GREATER     shift e prosecuzione allo stato 85
+    AND         shift e prosecuzione allo stato 86
+    OR          shift e prosecuzione allo stato 87
+    ELOWER      shift e prosecuzione allo stato 88
+    EGREATER    shift e prosecuzione allo stato 89
+    ETILDA      shift e prosecuzione allo stato 90
+    DEQUAL      shift e prosecuzione allo stato 91
+    TWOPOINT    shift e prosecuzione allo stato 92
+
+    $default  riduzione con la regola 15 (stat)
+
+
+Stato 140
+
+   16 stat: IF exp THEN block . elseif_statement else_statement END1
+
+    $default  riduzione con la regola 25 (elseif_statement)
+
+    elseif_statement  prosecuzione allo stato 157
+
+
+Stato 141
+
+   17 stat: FOR NAME EQUAL exp . COMMA exp oexpcomma DO block END1
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+
+    COMMA       shift e prosecuzione allo stato 158
+    PLUS        shift e prosecuzione allo stato 78
+    MINUS       shift e prosecuzione allo stato 79
+    ASTERISK    shift e prosecuzione allo stato 80
+    FSLASH      shift e prosecuzione allo stato 81
+    ARCH        shift e prosecuzione allo stato 82
+    PERCENTAGE  shift e prosecuzione allo stato 83
+    LOWER       shift e prosecuzione allo stato 84
+    GREATER     shift e prosecuzione allo stato 85
+    AND         shift e prosecuzione allo stato 86
+    OR          shift e prosecuzione allo stato 87
+    ELOWER      shift e prosecuzione allo stato 88
+    EGREATER    shift e prosecuzione allo stato 89
+    ETILDA      shift e prosecuzione allo stato 90
+    DEQUAL      shift e prosecuzione allo stato 91
+    TWOPOINT    shift e prosecuzione allo stato 92
+
+
+Stato 142
+
+   39 namelist: namelist COMMA NAME .
+
+    $default  riduzione con la regola 39 (namelist)
+
+
+Stato 143
+
+   18 stat: FOR namelist IN explist . DO block END1
+   41 explist: explist . COMMA exp
+
+    COMMA  shift e prosecuzione allo stato 77
+    DO     shift e prosecuzione allo stato 159
+
+
+Stato 144
+
+   30 funcname: funcname POINT NAME . ofuncname
+
+    COLON  shift e prosecuzione allo stato 160
+
+    $default  riduzione con la regola 31 (ofuncname)
+
+    ofuncname  prosecuzione allo stato 161
+
+
+Stato 145
+
+   20 stat: LOCAL FUNCTION NAME funcbody .
+
+    $default  riduzione con la regola 20 (stat)
+
+
+Stato 146
+
+   22 stat: LOCAL namelist EQUAL explist .
+   41 explist: explist . COMMA exp
+
+    COMMA  shift e prosecuzione allo stato 77
+
+    $default  riduzione con la regola 22 (stat)
+
+
+Stato 147
+
+   36 var: prefixexp OSBRACKET exp CSBRACKET .
+
+    $default  riduzione con la regola 36 (var)
+
+
+Stato 148
+
+   76 args: OPARENTHESIS oexplist CPARENTHESIS .
+
+    $default  riduzione con la regola 76 (args)
+
+
+Stato 149
+
+   75 functioncall: prefixexp COLON NAME args .
+
+    $default  riduzione con la regola 75 (functioncall)
+
+
+Stato 150
+
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+   93 field: NAME EQUAL exp .
+
+    PLUS        shift e prosecuzione allo stato 78
+    MINUS       shift e prosecuzione allo stato 79
+    ASTERISK    shift e prosecuzione allo stato 80
+    FSLASH      shift e prosecuzione allo stato 81
+    ARCH        shift e prosecuzione allo stato 82
+    PERCENTAGE  shift e prosecuzione allo stato 83
+    LOWER       shift e prosecuzione allo stato 84
+    GREATER     shift e prosecuzione allo stato 85
+    AND         shift e prosecuzione allo stato 86
+    OR          shift e prosecuzione allo stato 87
+    ELOWER      shift e prosecuzione allo stato 88
+    EGREATER    shift e prosecuzione allo stato 89
+    ETILDA      shift e prosecuzione allo stato 90
+    DEQUAL      shift e prosecuzione allo stato 91
+    TWOPOINT    shift e prosecuzione allo stato 92
+
+    $default  riduzione con la regola 93 (field)
+
+
+Stato 151
+
+   92 field: OSBRACKET exp CSBRACKET . EQUAL exp
+
+    EQUAL  shift e prosecuzione allo stato 162
+
+
+Stato 152
+
+   89 fieldlist: fieldlist fieldsep field .
+
+    $default  riduzione con la regola 89 (fieldlist)
+
+
+Stato 153
+
+   39 namelist: namelist COMMA . NAME
+   84 oparlist: COMMA . THREEPOINT
+
+    NAME        shift e prosecuzione allo stato 142
+    THREEPOINT  shift e prosecuzione allo stato 163
+
+
+Stato 154
+
+   81 parlist: namelist oparlist .
+
+    $default  riduzione con la regola 81 (parlist)
+
+
+Stato 155
+
+   80 funcbody: OPARENTHESIS opt_parlist CPARENTHESIS . block END1
+
+    $default  riduzione con la regola 4 (stats)
+
+    chunk  prosecuzione allo stato 42
+    stats  prosecuzione allo stato 3
+    block  prosecuzione allo stato 164
+
+
+Stato 156
+
+   14 stat: WHILE exp DO block END1 .
+
+    $default  riduzione con la regola 14 (stat)
+
+
+Stato 157
+
+   16 stat: IF exp THEN block elseif_statement . else_statement END1
+   26 elseif_statement: elseif_statement . ELSEIF exp THEN block
+
+    ELSEIF  shift e prosecuzione allo stato 165
+    ELSE    shift e prosecuzione allo stato 166
+
+    $default  riduzione con la regola 27 (else_statement)
+
+    else_statement  prosecuzione allo stato 167
+
+
+Stato 158
+
+   17 stat: FOR NAME EQUAL exp COMMA . exp oexpcomma DO block END1
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 168
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 159
+
+   18 stat: FOR namelist IN explist DO . block END1
+
+    $default  riduzione con la regola 4 (stats)
+
+    chunk  prosecuzione allo stato 42
+    stats  prosecuzione allo stato 3
+    block  prosecuzione allo stato 169
+
+
+Stato 160
+
+   32 ofuncname: COLON . NAME
+
+    NAME  shift e prosecuzione allo stato 170
+
+
+Stato 161
+
+   30 funcname: funcname POINT NAME ofuncname .
+
+    $default  riduzione con la regola 30 (funcname)
+
+
+Stato 162
+
+   92 field: OSBRACKET exp CSBRACKET EQUAL . exp
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 171
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 163
+
+   84 oparlist: COMMA THREEPOINT .
+
+    $default  riduzione con la regola 84 (oparlist)
+
+
+Stato 164
+
+   80 funcbody: OPARENTHESIS opt_parlist CPARENTHESIS block . END1
+
+    END1  shift e prosecuzione allo stato 172
+
+
+Stato 165
+
+   26 elseif_statement: elseif_statement ELSEIF . exp THEN block
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 173
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 166
+
+   28 else_statement: ELSE . block
+
+    $default  riduzione con la regola 4 (stats)
+
+    chunk  prosecuzione allo stato 42
+    stats  prosecuzione allo stato 3
+    block  prosecuzione allo stato 174
+
+
+Stato 167
+
+   16 stat: IF exp THEN block elseif_statement else_statement . END1
+
+    END1  shift e prosecuzione allo stato 175
+
+
+Stato 168
+
+   17 stat: FOR NAME EQUAL exp COMMA exp . oexpcomma DO block END1
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+
+    COMMA       shift e prosecuzione allo stato 176
+    PLUS        shift e prosecuzione allo stato 78
+    MINUS       shift e prosecuzione allo stato 79
+    ASTERISK    shift e prosecuzione allo stato 80
+    FSLASH      shift e prosecuzione allo stato 81
+    ARCH        shift e prosecuzione allo stato 82
+    PERCENTAGE  shift e prosecuzione allo stato 83
+    LOWER       shift e prosecuzione allo stato 84
+    GREATER     shift e prosecuzione allo stato 85
+    AND         shift e prosecuzione allo stato 86
+    OR          shift e prosecuzione allo stato 87
+    ELOWER      shift e prosecuzione allo stato 88
+    EGREATER    shift e prosecuzione allo stato 89
+    ETILDA      shift e prosecuzione allo stato 90
+    DEQUAL      shift e prosecuzione allo stato 91
+    TWOPOINT    shift e prosecuzione allo stato 92
+
+    $default  riduzione con la regola 23 (oexpcomma)
+
+    oexpcomma  prosecuzione allo stato 177
+
+
+Stato 169
+
+   18 stat: FOR namelist IN explist DO block . END1
+
+    END1  shift e prosecuzione allo stato 178
+
+
+Stato 170
+
+   32 ofuncname: COLON NAME .
+
+    $default  riduzione con la regola 32 (ofuncname)
+
+
+Stato 171
+
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+   92 field: OSBRACKET exp CSBRACKET EQUAL exp .
+
+    PLUS        shift e prosecuzione allo stato 78
+    MINUS       shift e prosecuzione allo stato 79
+    ASTERISK    shift e prosecuzione allo stato 80
+    FSLASH      shift e prosecuzione allo stato 81
+    ARCH        shift e prosecuzione allo stato 82
+    PERCENTAGE  shift e prosecuzione allo stato 83
+    LOWER       shift e prosecuzione allo stato 84
+    GREATER     shift e prosecuzione allo stato 85
+    AND         shift e prosecuzione allo stato 86
+    OR          shift e prosecuzione allo stato 87
+    ELOWER      shift e prosecuzione allo stato 88
+    EGREATER    shift e prosecuzione allo stato 89
+    ETILDA      shift e prosecuzione allo stato 90
+    DEQUAL      shift e prosecuzione allo stato 91
+    TWOPOINT    shift e prosecuzione allo stato 92
+
+    $default  riduzione con la regola 92 (field)
+
+
+Stato 172
+
+   80 funcbody: OPARENTHESIS opt_parlist CPARENTHESIS block END1 .
+
+    $default  riduzione con la regola 80 (funcbody)
+
+
+Stato 173
+
+   26 elseif_statement: elseif_statement ELSEIF exp . THEN block
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+
+    THEN        shift e prosecuzione allo stato 179
+    PLUS        shift e prosecuzione allo stato 78
+    MINUS       shift e prosecuzione allo stato 79
+    ASTERISK    shift e prosecuzione allo stato 80
+    FSLASH      shift e prosecuzione allo stato 81
+    ARCH        shift e prosecuzione allo stato 82
+    PERCENTAGE  shift e prosecuzione allo stato 83
+    LOWER       shift e prosecuzione allo stato 84
+    GREATER     shift e prosecuzione allo stato 85
+    AND         shift e prosecuzione allo stato 86
+    OR          shift e prosecuzione allo stato 87
+    ELOWER      shift e prosecuzione allo stato 88
+    EGREATER    shift e prosecuzione allo stato 89
+    ETILDA      shift e prosecuzione allo stato 90
+    DEQUAL      shift e prosecuzione allo stato 91
+    TWOPOINT    shift e prosecuzione allo stato 92
+
+
+Stato 174
+
+   28 else_statement: ELSE block .
+
+    $default  riduzione con la regola 28 (else_statement)
+
+
+Stato 175
+
+   16 stat: IF exp THEN block elseif_statement else_statement END1 .
+
+    $default  riduzione con la regola 16 (stat)
+
+
+Stato 176
+
+   24 oexpcomma: COMMA . exp
+
+    NAME          shift e prosecuzione allo stato 5
+    OPARENTHESIS  shift e prosecuzione allo stato 8
+    STRING        shift e prosecuzione allo stato 22
+    OBRACKET      shift e prosecuzione allo stato 23
+    FUNCTION      shift e prosecuzione allo stato 24
+    THREEPOINT    shift e prosecuzione allo stato 25
+    MINUS         shift e prosecuzione allo stato 26
+    HASH          shift e prosecuzione allo stato 27
+    NOT           shift e prosecuzione allo stato 28
+    NIL           shift e prosecuzione allo stato 29
+    FALSE         shift e prosecuzione allo stato 30
+    TRUE          shift e prosecuzione allo stato 31
+    NUMBER        shift e prosecuzione allo stato 32
+
+    var               prosecuzione allo stato 33
+    exp               prosecuzione allo stato 180
+    prefixexp         prosecuzione allo stato 37
+    functioncall      prosecuzione allo stato 38
+    function          prosecuzione allo stato 39
+    tableconstructor  prosecuzione allo stato 40
+
+
+Stato 177
+
+   17 stat: FOR NAME EQUAL exp COMMA exp oexpcomma . DO block END1
+
+    DO  shift e prosecuzione allo stato 181
+
+
+Stato 178
+
+   18 stat: FOR namelist IN explist DO block END1 .
+
+    $default  riduzione con la regola 18 (stat)
+
+
+Stato 179
+
+   26 elseif_statement: elseif_statement ELSEIF exp THEN . block
+
+    $default  riduzione con la regola 4 (stats)
+
+    chunk  prosecuzione allo stato 42
+    stats  prosecuzione allo stato 3
+    block  prosecuzione allo stato 182
+
+
+Stato 180
+
+   24 oexpcomma: COMMA exp .
+   53 exp: exp . MINUS exp
+   54    | exp . PLUS exp
+   55    | exp . ASTERISK exp
+   56    | exp . FSLASH exp
+   57    | exp . ARCH exp
+   58    | exp . TWOPOINT exp
+   59    | exp . PERCENTAGE exp
+   60    | exp . LOWER exp
+   61    | exp . ELOWER exp
+   62    | exp . GREATER exp
+   63    | exp . EGREATER exp
+   64    | exp . DEQUAL exp
+   65    | exp . ETILDA exp
+   66    | exp . AND exp
+   67    | exp . OR exp
+
+    PLUS        shift e prosecuzione allo stato 78
+    MINUS       shift e prosecuzione allo stato 79
+    ASTERISK    shift e prosecuzione allo stato 80
+    FSLASH      shift e prosecuzione allo stato 81
+    ARCH        shift e prosecuzione allo stato 82
+    PERCENTAGE  shift e prosecuzione allo stato 83
+    LOWER       shift e prosecuzione allo stato 84
+    GREATER     shift e prosecuzione allo stato 85
+    AND         shift e prosecuzione allo stato 86
+    OR          shift e prosecuzione allo stato 87
+    ELOWER      shift e prosecuzione allo stato 88
+    EGREATER    shift e prosecuzione allo stato 89
+    ETILDA      shift e prosecuzione allo stato 90
+    DEQUAL      shift e prosecuzione allo stato 91
+    TWOPOINT    shift e prosecuzione allo stato 92
+
+    $default  riduzione con la regola 24 (oexpcomma)
+
+
+Stato 181
+
+   17 stat: FOR NAME EQUAL exp COMMA exp oexpcomma DO . block END1
+
+    $default  riduzione con la regola 4 (stats)
+
+    chunk  prosecuzione allo stato 42
+    stats  prosecuzione allo stato 3
+    block  prosecuzione allo stato 183
+
+
+Stato 182
+
+   26 elseif_statement: elseif_statement ELSEIF exp THEN block .
+
+    $default  riduzione con la regola 26 (elseif_statement)
+
+
+Stato 183
+
+   17 stat: FOR NAME EQUAL exp COMMA exp oexpcomma DO block . END1
+
+    END1  shift e prosecuzione allo stato 184
+
+
+Stato 184
+
+   17 stat: FOR NAME EQUAL exp COMMA exp oexpcomma DO block END1 .
+
+    $default  riduzione con la regola 17 (stat)
